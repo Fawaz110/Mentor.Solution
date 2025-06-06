@@ -1,10 +1,13 @@
-﻿using Core.Entities;
+﻿using App.API.Helpers.MappingProfiles;
+using Core.Entities;
+using Core.Service.Contract;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Repository;
+using Service;
 using System.Text;
 
 namespace App.API.Extenssions
@@ -48,16 +51,18 @@ namespace App.API.Extenssions
         {
 
             #region ConfigureRepository
-            
+
             #endregion
 
             #region ConfigureServices
+
+            services.AddScoped(typeof(IAuthService), typeof(AuthService));
 
             #endregion
 
             #region MappingProfiles
 
-            // services.AddAutoMapper(typeof(MappingProfile));
+             services.AddAutoMapper(typeof(MentorMappingProfile));
 
             #endregion
 

@@ -2,6 +2,9 @@
 using App.API.Errors;
 using App.API.Extenssions;
 using App.API.Middlewares;
+using App.API.Seeding;
+using Core.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Repository;
@@ -79,7 +82,9 @@ namespace App.API
                 logger.LogWarning("No Pending Migrations in MentorDbContext");
             }
 
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
+            await ContextSeed.ApplyRolesSeeding(roleManager, logger);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
