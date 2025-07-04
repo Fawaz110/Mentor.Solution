@@ -8,7 +8,7 @@ namespace App.API.Seeding
         {
             if (!roleManager.Roles.Any())
             {
-                string[] roleNames = { "student", "mentor", "admin" };
+                string[] roleNames = { "student", "company", "mentor", "admin" };
 
                 foreach (var roleName in roleNames)
                     if (!await roleManager.RoleExistsAsync(roleName))

@@ -17,5 +17,7 @@ namespace Repository
             base.OnModelCreating(builder);
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
+
+        public DbSet<Email> Emails { get; set; }
     }
 }

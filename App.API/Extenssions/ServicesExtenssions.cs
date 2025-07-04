@@ -1,4 +1,5 @@
 ﻿using App.API.Helpers.MappingProfiles;
+using Core;
 using Core.Entities;
 using Core.Service.Contract;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -52,6 +53,8 @@ namespace App.API.Extenssions
 
             #region ConfigureRepository
 
+            
+
             #endregion
 
             #region ConfigureServices
@@ -60,9 +63,15 @@ namespace App.API.Extenssions
 
             #endregion
 
+            #region UnitOfWorks
+
+            services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
+
+            #endregion
+
             #region MappingProfiles
 
-             services.AddAutoMapper(typeof(MentorMappingProfile));
+            services.AddAutoMapper(typeof(MentorMappingProfile));
 
             #endregion
 
