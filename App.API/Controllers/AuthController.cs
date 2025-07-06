@@ -171,6 +171,32 @@ namespace App.API.Controllers
         }
         #endregion
 
+        #region Assign user to role endpoint
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiResponse))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiResponse))]
+        [HttpPost("assign-role")]
+        public async Task<ActionResult<ApiResponse>> AssignRole([FromBody] UserRoleDto model)
+        {
+            var user = await _userManager.FindByIdAsync(model.UserId);
 
+            if (user is null)
+                return NotFound(new ApiResponse(404));
+
+            if (model.RoleName == "admin" && !(await _userManager.IsInRoleAsync(user, "admin")))
+                return Unauthorized(new ApiResponse(401, "unauthorized. only admins can add users to this role"));
+
+            if (await _userManager.IsInRoleAsync(user, model.RoleName))
+                return Ok(new ApiResponse(200, "user already assigned to this role."));
+
+            var result = await _userManager.AddToRoleAsync(user, model.RoleName);
+
+            if (!result.Succeeded)
+                return BadRequest(new ApiResponse(400));
+
+            return Ok(new ApiResponse(200));
+        }
+        #endregion
     }
 }
