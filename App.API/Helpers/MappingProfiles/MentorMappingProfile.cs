@@ -1,4 +1,4 @@
-﻿using App.API.DTOs.UserDtos;
+﻿using App.API.DTOs;
 using App.API.Helpers.MappingProfiles.Resolvers;
 using AutoMapper;
 using Core.Entities;

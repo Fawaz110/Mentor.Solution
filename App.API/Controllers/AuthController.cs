@@ -1,4 +1,5 @@
-﻿using App.API.DTOs.UserDtos;
+﻿using App.API.DTOs;
+using App.API.DTOs.UserDtos;
 using App.API.Errors;
 using AutoMapper;
 using Core.Entities;

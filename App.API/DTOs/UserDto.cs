@@ -1,4 +1,4 @@
-﻿namespace App.API.DTOs.UserDtos
+﻿namespace App.API.DTOs
 {
     public class UserDto : BaseUserDto
     {

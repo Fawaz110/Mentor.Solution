@@ -1,4 +1,4 @@
-﻿using App.API.DTOs.UserDtos;
+﻿using App.API.DTOs;
 using AutoMapper;
 using Core.Entities;
 
