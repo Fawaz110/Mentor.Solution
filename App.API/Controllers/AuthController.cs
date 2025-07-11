@@ -47,7 +47,7 @@ namespace App.API.Controllers
             user = new AppUser
             {
                 Name = model.Name,
-                UserName = model.Name.Split(" ")[0] + Guid.NewGuid().ToString().Split('-')[0],
+                UserName = model.Name.Split(" ")[0].ToLower() + Guid.NewGuid().ToString().Split('-')[0],
                 Email = model.Email,
                 PhoneNumber = model.Phone
             };
@@ -192,6 +192,13 @@ namespace App.API.Controllers
                 return Ok(new ApiResponse(200, "user already assigned to this role."));
 
             var result = await _userManager.AddToRoleAsync(user, model.RoleName);
+
+            if (!result.Succeeded)
+                return BadRequest(new ApiResponse(400));
+
+            user.Role = model.RoleName.ToLower();
+
+            result = await _userManager.UpdateAsync(user);
 
             if (!result.Succeeded)
                 return BadRequest(new ApiResponse(400));

@@ -44,10 +44,10 @@ namespace Service
             };
 
             if (!string.IsNullOrEmpty(user.Profile))
-                authClaims.Add(new Claim("profile", Path.Combine(_configuration["URLS:Default"], "Images", "Profiles", user.Profile)));
+                authClaims.Add(new Claim("profile", Path.Combine(_configuration["URLS:https"], "Images", "Profiles", user.Profile)));
 
             if (!string.IsNullOrEmpty(user.Cover))
-                authClaims.Add(new Claim("cover", Path.Combine(_configuration["URLS:Default"], "Images", "Covers", user.Cover)));
+                authClaims.Add(new Claim("cover", Path.Combine(_configuration["URLS:https"], "Images", "Covers", user.Cover)));
 
             var userRoles = await _userManager.GetRolesAsync(user);
 

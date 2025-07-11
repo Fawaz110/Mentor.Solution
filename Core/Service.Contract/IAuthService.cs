@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Core.Entities.Ignored;
+using Core.Specifications;
 
 namespace Core.Service.Contract
 {
@@ -14,5 +15,6 @@ namespace Core.Service.Contract
         /// <param name="code"></param>
         /// <returns>returns null if email expired or doesn't exist. Otherwise returns email</returns>
         Task<Email> CheckEmailAsync(string code);
+        //Task<IEnumerable<AppUser>> GetAllAsync(PaginationQueryParams query, bool tracking = false);
     }
 }

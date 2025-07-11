@@ -33,8 +33,16 @@ namespace Core.Specifications
             IsPaginationEnabled = true;
             Skip = _skip;
             Take = _take;
-        } 
+        }
+
+        public void AddOrderBy(Expression<Func<TEntity, object>> _orderBy)
+        {
+            OrderBy = _orderBy;
+        }
+        public void AddOrderByDesc(Expression<Func<TEntity, object>> _orderByDesc)
+        {
+            OrderByDesc = _orderByDesc;
+        }
         #endregion
-    
     }
 }
