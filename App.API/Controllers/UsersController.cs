@@ -20,18 +20,21 @@ namespace App.API.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
         private readonly IAuthService _authService;
+        private readonly ISocialMediaService _socialMediaService;
 
         public UsersController(
             UserManager<AppUser> userManager,
             IMapper mapper,
-            IAuthService authService)
+            IAuthService authService,
+            ISocialMediaService socialMediaService)
         {
             _userManager = userManager;
             _mapper = mapper;
             _authService = authService;
+            _socialMediaService = socialMediaService;
         }
 
-        #region Profile endpoint (to be continued...) add social media
+        #region Profile endpoint
         [Authorize]
         [HttpGet("profile")]
         public async Task<ActionResult<UserDto>> GetProfile()
@@ -41,7 +44,9 @@ namespace App.API.Controllers
             if (string.IsNullOrEmpty(id))
                 return NotFound(new ApiResponse(404));
 
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.Users
+                .Include(u => u.SocialMediaLinks)
+                .ThenInclude(u => u.SocialMedia).FirstOrDefaultAsync(u => u.Id == id);
 
             if (user is null)
                 return NotFound(new ApiResponse(404));
@@ -56,7 +61,9 @@ namespace App.API.Controllers
         [HttpGet("{username}")]
         public async Task<ActionResult<UserProfileDto>> GetUser(string username)
         {
-            var user = await _userManager.FindByNameAsync(username);
+            var user = await _userManager.Users
+                .Include(u => u.SocialMediaLinks)
+                .ThenInclude(u => u.SocialMedia).FirstOrDefaultAsync(u => u.UserName.Trim().ToLower().Contains(username.Trim().ToLower()));
 
             if (user is null)
                 return NotFound(new ApiResponse(404));
@@ -286,6 +293,35 @@ namespace App.API.Controllers
         }
         #endregion
 
+        #region Add social media link endpoint
+        [Authorize]
+        [HttpPost("social-media")]
+        public async Task<ActionResult<ApiResponse>> AddSocialLink([FromBody] UserSocialDto model)
+        {
+            var id = User.FindFirstValue("id");
 
+            if (string.IsNullOrEmpty(id))
+                return NotFound(new ApiResponse(404));
+
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user is null)
+                return NotFound(new ApiResponse(404));
+
+            var itemToAdd = new UserSocialMedia
+            {
+                AppUserId = id,
+                SocialMediaId = model.SocialMediaId,
+                Username = model.Username
+            };
+
+            var result = await _socialMediaService.AddUserSocialAsync(itemToAdd);
+
+            if (result is null)
+                return BadRequest(new ApiResponse(400, "an error occured. profile problem or unsupported social media"));
+
+            return Ok(new ApiResponse(200));
+        }
+        #endregion
     }
 }

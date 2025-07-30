@@ -69,15 +69,15 @@ namespace App.API
             var loggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
 
             var logger = loggerFactory.CreateLogger<Program>();
+            
+            var mentorDbContext = scope.ServiceProvider.GetService<MentorDbContext>();
 
             try
             {
-                var mentorDbContext = scope.ServiceProvider.GetService<MentorDbContext>();
-
                 if (mentorDbContext != null)
                     await mentorDbContext.Database.MigrateAsync();
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 logger.LogWarning("No Pending Migrations in MentorDbContext");
             }
@@ -85,6 +85,8 @@ namespace App.API
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
             await ContextSeed.ApplyRolesSeeding(roleManager, logger);
+
+            await ContextSeed.ApplySocialMediaSeeding(mentorDbContext, logger);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

@@ -177,6 +177,7 @@ namespace App.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiResponse))]
+        [Authorize]
         [HttpPost("assign-role")]
         public async Task<ActionResult<ApiResponse>> AssignRole([FromBody] UserRoleDto model)
         {
@@ -185,7 +186,17 @@ namespace App.API.Controllers
             if (user is null)
                 return NotFound(new ApiResponse(404));
 
-            if (model.RoleName == "admin" && !(await _userManager.IsInRoleAsync(user, "admin")))
+            var id = User.FindFirstValue("id");
+
+            if (string.IsNullOrEmpty(id))
+                return NotFound(new ApiResponse(404));
+
+            var adder = await _userManager.FindByIdAsync(id);
+
+            if(adder is null)
+                return Unauthorized(new ApiResponse(401));
+
+            if (model.RoleName == "admin" && !(await _userManager.IsInRoleAsync(adder, "admin")))
                 return Unauthorized(new ApiResponse(401, "unauthorized. only admins can add users to this role"));
 
             if (await _userManager.IsInRoleAsync(user, model.RoleName))

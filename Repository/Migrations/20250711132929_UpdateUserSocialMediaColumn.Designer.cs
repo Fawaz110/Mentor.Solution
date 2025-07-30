@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository;
 
@@ -11,9 +12,11 @@ using Repository;
 namespace Repository.Migrations
 {
     [DbContext(typeof(MentorDbContext))]
-    partial class MentorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250711132929_UpdateUserSocialMediaColumn")]
+    partial class UpdateUserSocialMediaColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -125,7 +128,7 @@ namespace Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Emails", (string)null);
+                    b.ToTable("Emails");
                 });
 
             modelBuilder.Entity("Core.Entities.SocialMedia", b =>
@@ -144,7 +147,7 @@ namespace Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SocialMedia", (string)null);
+                    b.ToTable("SocialMedia");
                 });
 
             modelBuilder.Entity("Core.Entities.UserSocialMedia", b =>
@@ -163,7 +166,7 @@ namespace Repository.Migrations
 
                     b.HasIndex("SocialMediaId");
 
-                    b.ToTable("SocialMediaLinks", (string)null);
+                    b.ToTable("SocialMediaLinks");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

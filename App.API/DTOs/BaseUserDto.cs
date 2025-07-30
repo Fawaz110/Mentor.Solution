@@ -1,4 +1,6 @@
-﻿namespace App.API.DTOs
+﻿using App.API.DTOs.UserDtos;
+
+namespace App.API.DTOs
 {
     public class BaseUserDto
     {
@@ -9,5 +11,6 @@
         public string Name { get; set; }
         public string Email { get; set; }
         public string Role { get; set; }
+        public List<UserSocialMediaDto> SocialMedia { get; set; } = new List<UserSocialMediaDto>();
     }
 }

@@ -13,18 +13,17 @@ namespace Core.Specifications
         public BaseSpecification(Expression<Func<TEntity, bool>> _criteria)
         {
             Criteria.Add(_criteria);
-        } 
+        }
         #endregion
 
         #region Properties
-        public List<Expression<Func<TEntity, bool>>> Criteria { get; set; }
-        public List<Expression<Func<TEntity, object>>> Includes { get; set; }
+        public List<Expression<Func<TEntity, bool>>> Criteria { get; set; } = new List<Expression<Func<TEntity, bool>>>();
+        public List<Expression<Func<TEntity, object>>> Includes { get; set; } = new List<Expression<Func<TEntity, object>>>();
         public Expression<Func<TEntity, object>> OrderBy { get; set; }
         public Expression<Func<TEntity, object>> OrderByDesc { get; set; }
         public int Skip { get; set; }
         public int Take { get; set; }
         public bool IsPaginationEnabled { get; set; }
-        List<Expression<Func<TEntity, bool>>> ISpecifications<TEntity>.Criteria { get; set; }
         #endregion
 
         #region Methods

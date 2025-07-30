@@ -60,6 +60,7 @@ namespace App.API.Extenssions
             #region ConfigureServices
 
             services.AddScoped(typeof(IAuthService), typeof(AuthService));
+            services.AddScoped(typeof(ISocialMediaService), typeof(SocialMediaService));
 
             #endregion
 
