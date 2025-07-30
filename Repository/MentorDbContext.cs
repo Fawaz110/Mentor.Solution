@@ -21,5 +21,6 @@ namespace Repository
         public DbSet<Email> Emails { get; set; }
         public DbSet<SocialMedia> SocialMedia { get; set; }
         public DbSet<UserSocialMedia> SocialMediaLinks { get; set; }
+        public DbSet<Post> Posts { get; set; }
     }
 }
